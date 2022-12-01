@@ -3,18 +3,15 @@ use std::fs;
 
 fn main() {
     let args: Vec<String> = env::args().collect();
-    let config = parse_config(&args);
-    let contents =
-        fs::read_to_string(config.file_path).expect("Something went wrong reading the file");
+    let configs = Config::from_args(&args);
+    let contents = configs.get_contents();
 
-    if config.question == "a" {
-        let result = solve_part_a(&contents);
-        println!("The answer to part a is: {}", result);
-    } else if config.question == "b" {
-        let result = solve_part_b(&contents);
-        println!("The answer to part b is: {}", result);
-    } else {
-        println!("Unknown question: {}", config.question);
+    let inputs = parse_contents(&contents);
+
+    match configs.question.as_str() {
+        "a" => println!("Answer to Part a: {}", solve_part_a(&inputs)),
+        "b" => println!("Answer to Part b: {}", solve_part_b(&inputs)),
+        _ => println!("Question must be a or b, got {}", configs.question),
     }
 }
 
@@ -23,50 +20,68 @@ struct Config {
     file_path: String,
 }
 
-fn parse_config(args: &[String]) -> Config {
-    // question is first arg, file path is second
-    let question = &args[1];
-    let file_path = &args[2];
+impl Config {
+    fn from_args(args: &[String]) -> Config {
+        let question = args[1].clone();
+        let file_path = args[2].clone();
+        Config {
+            question,
+            file_path,
+        }
+    }
 
-    Config {
-        file_path: file_path.to_string(),
-        question: question.to_string(),
+    fn get_contents(&self) -> String {
+        fs::read_to_string(&self.file_path).expect("The file path should be valid")
+    }
+}
+struct Troupe {
+    elves: Vec<Elf>,
+}
+
+struct Elf {
+    inventory: Vec<i32>,
+}
+
+impl Elf {
+    fn total_carried(&self) -> i32 {
+        self.inventory.iter().sum()
     }
 }
 
-// Very simple imperative solution. Loop through lines, keeping track of the current
-// score and the best score seen so far.
-fn solve_part_a(contents: &str) -> i32 {
-    let mut best = 0;
-    let mut current = 0;
+// Construct a Troupe of Elves from the string contents of the input file
+// imperative implementation -- perhaps it's more idiomatic to use fold/map?
+fn parse_contents(contents: &str) -> Troupe {
+    let mut elf = Elf {
+        inventory: Vec::new(),
+    };
+    let mut troupe = Troupe { elves: Vec::new() };
     for line in contents.lines() {
-        // empty lines delineate the different elves
         if line.is_empty() {
-            if current > best {
-                best = current;
-            }
-            current = 0;
+            // empty lines separate elves
+            troupe.elves.push(elf);
+            elf = Elf {
+                inventory: Vec::new(),
+            };
         } else {
-            current += line.parse::<i32>().unwrap();
+            let item = line.parse::<i32>().unwrap();
+            elf.inventory.push(item);
         }
     }
-    best
+    troupe
 }
 
-// Convert to list of summed scores, then sort and sum first 3.
-fn solve_part_b(contents: &str) -> i32 {
-    let mut scores: Vec<i32> = Vec::new();
-    let mut current = 0;
-    for line in contents.lines() {
-        // empty lines delineate the different elves
-        if line.is_empty() {
-            scores.push(current);
-            current = 0;
-        } else {
-            current += line.parse::<i32>().unwrap();
-        }
+fn solve_part_a(troupe: &Troupe) -> i32 {
+    troupe.elves.iter().map(Elf::total_carried).max().unwrap()
+}
+
+fn solve_part_b(troupe: &Troupe) -> i32 {
+    let mut scores: Vec<i32> = troupe.elves.iter().map(Elf::total_carried).collect();
+
+    // I'm a bit confused as to why I had to do this. All I know is that the compiler wouldn't let
+    // me do it the obvious way, i.e. scores.sort().reverse().iter().take(3).sum()
+    {
+        scores.sort();
+        scores.reverse();
     }
-    scores.sort_unstable();
-    let len = scores.len();
-    scores[len - 1] + scores[len - 2] + scores[len - 3]
+    scores.iter().take(3).sum()
 }
