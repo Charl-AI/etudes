@@ -22,6 +22,14 @@ Finally, run the code with
 cargo run
 ```
 
+## Command Line Arguments
+
+Each challenge has two parts (a and b). You can select which part to solve by passing the part as the first command line argument. Supply the path to the input file as the second argument. All projects for the Rust 2022 challenges have this CLI.
+
+```bash
+cargo run -- a input.txt
+```
+
 ## Installation
 
 This project includes a `.devcontainer` directory, which enables use of GitHub Codespaces. You can open this repo **without any local installation** in a cloud-hosted 'codespace'. The dependencies will be automatically installed on the remote cloud machine, which you can access through your browser, VSCode, or even PyCharm. Simply start the codespace using the button in the GitHub UI. This is the easiest way to get a working development environment for this project.
