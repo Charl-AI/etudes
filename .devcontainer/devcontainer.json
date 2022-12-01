@@ -14,7 +14,8 @@
         "black-formatter.args": [
             "--experimental-string-processing"
         ],
-        "editor.formatOnSave": true
+        "editor.formatOnSave": true,
+        "rust-analyzer.checkOnSave.command": "clippy"
     },
     "extensions": [
         "ms-python.python",
