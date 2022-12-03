@@ -49,18 +49,21 @@ impl Alphabet {
 
 #[derive(Debug)]
 struct Rucksack {
-    compartment_1: String,
-    compartment_2: String,
+    items: String,
 }
 
 impl Rucksack {
+    // Split into two compartments and find the common item between them
     // O(n+m), create hashmap for compartment 1, then check against compartment 2
     fn get_duplicate_item(&self) -> char {
+        let midpoint = self.items.chars().count() / 2;
+        let (comp1, comp2) = self.items.split_at(midpoint);
+
         let mut seen = std::collections::HashSet::new();
-        for c in self.compartment_1.chars() {
+        for c in comp1.chars() {
             seen.insert(c);
         }
-        for c in self.compartment_2.chars() {
+        for c in comp2.chars() {
             if seen.contains(&c) {
                 return c;
             }
@@ -78,11 +81,8 @@ fn parse_contents(contents: &str) -> Supplies {
         rucksacks: Vec::new(),
     };
     for line in contents.lines() {
-        let midpoint = line.chars().count() / 2;
-        let (comp1, comp2) = line.split_at(midpoint);
         supplies.rucksacks.push(Rucksack {
-            compartment_1: comp1.to_string(),
-            compartment_2: comp2.to_string(),
+            items: line.to_string(),
         });
     }
     supplies
