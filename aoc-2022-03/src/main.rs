@@ -6,11 +6,11 @@ fn main() {
     let configs = Config::from_args(&args);
     let contents = configs.get_contents();
 
-    let inputs = parse_contents(&contents);
+    let supplies = Supplies::from_file_contents(&contents);
 
     match configs.question.as_str() {
-        "a" => println!("Answer to Part a: {}", solve_part_a(&inputs)),
-        "b" => println!("Answer to Part b: {}", unimplemented!()),
+        "a" => println!("Answer to Part a: {}", solve_part_a(&supplies)),
+        "b" => println!("Answer to Part b: {}", solve_part_b(&supplies)),
         _ => println!("Question must be a or b, got {}", configs.question),
     }
 }
@@ -47,7 +47,7 @@ impl Alphabet {
     }
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 struct Rucksack {
     items: String,
 }
@@ -76,16 +76,57 @@ struct Supplies {
     rucksacks: Vec<Rucksack>,
 }
 
-fn parse_contents(contents: &str) -> Supplies {
-    let mut supplies = Supplies {
-        rucksacks: Vec::new(),
-    };
-    for line in contents.lines() {
-        supplies.rucksacks.push(Rucksack {
-            items: line.to_string(),
-        });
+impl Supplies {
+    fn from_file_contents(contents: &str) -> Supplies {
+        let mut supplies = Supplies {
+            rucksacks: Vec::new(),
+        };
+        for line in contents.lines() {
+            supplies.rucksacks.push(Rucksack {
+                items: line.to_string(),
+            });
+        }
+        supplies
     }
-    supplies
+}
+
+// in part b, the supplies are grouped into chunks of 3. This is a vector of the groups
+// (which are represented as fixed size arrays)
+struct GroupedSupplies {
+    groups: Vec<[Rucksack; 3]>,
+}
+
+impl GroupedSupplies {
+    fn from_supplies(supplies: &Supplies) -> GroupedSupplies {
+        GroupedSupplies {
+            groups: supplies
+                .rucksacks
+                .chunks(3)
+                .map(|chunk| [chunk[0].clone(), chunk[1].clone(), chunk[2].clone()])
+                .collect(),
+        }
+    }
+
+    fn get_common_item(group: &[Rucksack; 3]) -> char {
+        let (rucksack_0, rucksack_1, rucksack_2) = (&group[0], &group[1], &group[2]);
+        let mut seen_in_0 = std::collections::HashSet::new();
+        let mut seen_in_0_and_1 = std::collections::HashSet::new();
+
+        for c in rucksack_0.items.chars() {
+            seen_in_0.insert(c);
+        }
+        for c in rucksack_1.items.chars() {
+            if seen_in_0.contains(&c) {
+                seen_in_0_and_1.insert(c);
+            }
+        }
+        for c in rucksack_2.items.chars() {
+            if seen_in_0_and_1.contains(&c) {
+                return c;
+            }
+        }
+        panic!("No common item found");
+    }
 }
 
 fn solve_part_a(supplies: &Supplies) -> i32 {
@@ -93,6 +134,16 @@ fn solve_part_a(supplies: &Supplies) -> i32 {
         .rucksacks
         .iter()
         .map(Rucksack::get_duplicate_item)
+        .map(Alphabet::get_character_score)
+        .sum()
+}
+
+fn solve_part_b(supplies: &Supplies) -> i32 {
+    let grouped_supplies = GroupedSupplies::from_supplies(supplies);
+    grouped_supplies
+        .groups
+        .iter()
+        .map(GroupedSupplies::get_common_item)
         .map(Alphabet::get_character_score)
         .sum()
 }
