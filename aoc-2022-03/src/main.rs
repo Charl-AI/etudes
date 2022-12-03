@@ -78,15 +78,14 @@ struct Supplies {
 
 impl Supplies {
     fn from_file_contents(contents: &str) -> Supplies {
-        let mut supplies = Supplies {
-            rucksacks: Vec::new(),
-        };
-        for line in contents.lines() {
-            supplies.rucksacks.push(Rucksack {
-                items: line.to_string(),
-            });
-        }
-        supplies
+        let rucksacks = contents
+            .lines()
+            .map(|l| Rucksack {
+                items: l.to_string(),
+            })
+            .collect();
+
+        Supplies { rucksacks }
     }
 }
 
