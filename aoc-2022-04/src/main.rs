@@ -41,6 +41,7 @@ struct Assignment {
 }
 
 impl Assignment {
+    // string is in the form "1-3", not necessarily single digits
     fn from_str(s: &str) -> Assignment {
         let mut nums = s.split('-');
         let lower = nums.next().unwrap().parse::<i32>().unwrap();
@@ -54,6 +55,7 @@ struct AssignmentPair {
 }
 
 impl AssignmentPair {
+    // line is in the form "1-3,5-7" , not necessarily single digits
     fn from_line(line: &str) -> AssignmentPair {
         let mut assignments = line.split(',');
         let ass1 = assignments.next().unwrap();
