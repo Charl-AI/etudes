@@ -114,7 +114,8 @@ impl Cargo {
     }
 
     // instruction is string of form "move 3 from 9 to 4"
-    fn move_from_instruction(&mut self, instruction: &str) {
+    // cratemover 9000 moves one crate at a time
+    fn cratemover_9000_move_from_instruction(&mut self, instruction: &str) {
         let mut words = instruction.split_whitespace();
         // note: .nth() consumes the iterator, so we repeat .nth(1) to get 1,3,5
         let num = words.nth(1).unwrap().parse::<usize>().unwrap();
@@ -124,6 +125,25 @@ impl Cargo {
         for _ in 0..num {
             let crate_ = self.stacks[from_stack - 1].pop().unwrap();
             self.stacks[to_stack - 1].push(crate_);
+        }
+    }
+
+    // instruction is string of form "move 3 from 9 to 4"
+    // cratemover 9001 moves multiple crates at a time
+    fn cratemover_9001_move_from_instruction(&mut self, instruction: &str) {
+        let mut words = instruction.split_whitespace();
+        // note: .nth() consumes the iterator, so we repeat .nth(1) to get 1,3,5
+        let num = words.nth(1).unwrap().parse::<usize>().unwrap();
+        let from_stack = words.nth(1).unwrap().parse::<usize>().unwrap();
+        let to_stack = words.nth(1).unwrap().parse::<usize>().unwrap();
+
+        let mut moving_crates = Vec::new();
+        for _ in 0..num {
+            moving_crates.push(self.stacks[from_stack - 1].pop().unwrap());
+        }
+
+        for _ in 0..num {
+            self.stacks[to_stack - 1].push(moving_crates.pop().unwrap());
         }
     }
 
@@ -143,14 +163,19 @@ impl Cargo {
 fn solve_part_a(cargo: &mut Cargo) -> String {
     let contents = cargo.contents.clone();
     let instructions = contents.lines().skip(10);
-    // let instructions = cargo.contents.copy().lines().skip(10);
 
     for instruction in instructions {
-        Cargo::move_from_instruction(cargo, instruction);
+        Cargo::cratemover_9000_move_from_instruction(cargo, instruction);
     }
     cargo.get_top_layer()
 }
 
 fn solve_part_b(cargo: &mut Cargo) -> String {
-    unimplemented!()
+    let contents = cargo.contents.clone();
+    let instructions = contents.lines().skip(10);
+
+    for instruction in instructions {
+        Cargo::cratemover_9001_move_from_instruction(cargo, instruction);
+    }
+    cargo.get_top_layer()
 }
