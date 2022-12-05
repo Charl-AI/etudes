@@ -98,7 +98,7 @@ impl Cargo {
                 }
             }
         }
-        // now, reverse order of each stack
+        // order must be reversed because we built the stack top to bottom
         for stack in stacks.iter_mut() {
             stack.crates.reverse();
         }
