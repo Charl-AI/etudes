@@ -95,10 +95,6 @@ impl Cargo {
                     if let Some(crate_) = Crate::unpack(c) {
                         stacks[(i - 1) / 4].push(crate_)
                     }
-                    // match Crate::unpack(c) {
-                    //     Some(crate_) => stacks[(i - 1) / 4].push(crate_),
-                    //     None => (),
-                    // }
                 }
             }
         }
