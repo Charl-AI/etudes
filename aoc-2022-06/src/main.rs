@@ -59,9 +59,8 @@ impl Signal {
     }
 
     // returns the index of the end of the first unique window, not the start
-    fn first_unique_window(&self) -> usize {
+    fn first_unique_window(&self, window_length: usize) -> usize {
         let mut window_start = 0;
-        let window_length = 4;
         while window_start + window_length < self.contents.len() {
             if self.is_window_unique(window_start, window_length) {
                 return window_start + window_length;
@@ -73,9 +72,9 @@ impl Signal {
 }
 
 fn solve_part_a(signal: &Signal) -> usize {
-    signal.first_unique_window()
+    signal.first_unique_window(4)
 }
 
 fn solve_part_b(signal: &Signal) -> usize {
-    unimplemented!()
+    signal.first_unique_window(14)
 }
