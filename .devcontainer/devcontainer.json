@@ -15,7 +15,18 @@
             "--experimental-string-processing"
         ],
         "editor.formatOnSave": true,
-        "rust-analyzer.checkOnSave.command": "clippy"
+        "rust-analyzer.checkOnSave.command": "clippy",
+        "[python]": {
+            "editor.defaultFormatter": "ms-python.black-formatter",
+            "editor.rulers": [
+                88
+            ]
+        },
+        "[rust]": {
+            "editor.rulers": [
+                100
+            ]
+        }
     },
     "extensions": [
         "ms-python.python",
