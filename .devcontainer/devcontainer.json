@@ -17,7 +17,6 @@
         "editor.formatOnSave": true,
         "rust-analyzer.checkOnSave.command": "clippy",
         "[python]": {
-            "editor.defaultFormatter": "ms-python.black-formatter",
             "editor.rulers": [
                 88
             ]
