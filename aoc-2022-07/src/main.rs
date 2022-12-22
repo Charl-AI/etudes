@@ -42,7 +42,6 @@ struct Files {
 impl Files {
     fn from_contents(contents: &str) -> Files {
         let mut filepath = Vec::new();
-        // sizes is a hashmap of the form (filepath, size)
         let mut sizes = std::collections::HashMap::new();
         for line in contents.lines() {
             if line.starts_with('$') {
@@ -84,6 +83,17 @@ impl Files {
         }
         total
     }
+
+    fn smallest_dir_above_threshold(&self, threshold: usize) -> usize {
+        self.sizes
+            .iter()
+            .filter(|(_, size)| **size > threshold)
+            .collect::<Vec<_>>()
+            .iter()
+            .map(|(_, size)| **size)
+            .min()
+            .unwrap()
+    }
 }
 
 fn solve_part_a(files: &Files) -> usize {
@@ -91,5 +101,7 @@ fn solve_part_a(files: &Files) -> usize {
 }
 
 fn solve_part_b(files: &Files) -> usize {
-    files.total_sizes_below_threshold(1000000)
+    let current_size = files.sizes.get("/").unwrap();
+    let threshold = current_size + 30000000 - 70000000;
+    files.smallest_dir_above_threshold(threshold)
 }
