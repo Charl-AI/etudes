@@ -3,9 +3,9 @@
 Advent of code challenges in languages I don't know. Simply for learning new languages and sharpening my data structures and algorithms skills.
 
 
-| Year | Language          | Progress  |
-|------|-------------------|-----------|
-| 2022 | Rust              | 6 / 25    |
+| Year | Language                   | Progress  |
+|------|----------------------------|-----------|
+| 2022 | Rust (2021 edition)        | 7.5 / 25  |
 
 
 ## Installation
