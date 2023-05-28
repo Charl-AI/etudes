@@ -3,4 +3,4 @@ channels:
   - defaults
 dependencies:
   - rust
-prefix: /data/miniconda3/envs/aoc
+  - lua
