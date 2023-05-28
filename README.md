@@ -5,11 +5,11 @@ Advent of code challenges in languages I don't know. Simply for learning new lan
 
 | Year | Language                   | Progress  |
 |------|----------------------------|-----------|
-| 2022 | Rust (2021 edition)        | 7.5 / 25  |
-| 2021 | Lua (5.4.6)                | 1   / 25  |
+| 2022 | Rust (2021 edition)        |  15 / 50  |
+| 2021 | Lua (5.4.6)                |  4  / 50  |
 
 
-Each day has two parts, I give half a point in the progress column above if I only solved one part. Whilst solving the first part, I generally try to imagine what the second part might be and design my solution with that in mind. I consider the solution extra successful if part b can be quickly solved using most of the part a code, without needing a refactor.
+Each day has two parts, with one star awarded per part -- the progress column above represents stars. Whilst solving the first part, I generally try to imagine what the second part might be and design my solution with that in mind. I consider the solution extra successful if part b can be quickly solved using most of the part a code, without needing a refactor.
 
 N.B. I am not requiring myself to tackle the problems in any order. I am simply using the back catalogue of existing questions and will solve easier/harder ones when I feel like it.
 
