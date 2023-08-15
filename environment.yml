@@ -1,6 +1,0 @@
-name: aoc
-channels:
-  - defaults
-dependencies:
-  - rust
-  - lua
