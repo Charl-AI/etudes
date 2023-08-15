@@ -2,7 +2,7 @@ import argparse
 from typing import Literal
 
 
-def get_inputs(file_path: str):
+def get_inputs(file_path: str) -> list[int]:
     codes = []
     with open(file_path, "r") as file:
         for line in file:
@@ -13,7 +13,7 @@ def get_inputs(file_path: str):
     return codes
 
 
-def run_program(codes):
+def run_program(codes: list[int]) -> list[int]:
     for i in range(0, len(codes), 4):
         opcode = codes[i]
         if opcode == 99:
@@ -27,6 +27,20 @@ def run_program(codes):
     return codes
 
 
+def brute_force_inputs(codes: list[int], target: int) -> int:
+    codes2 = codes.copy()
+    for i in range(100):
+        for j in range(100):
+            codes[1] = i
+            codes[2] = j
+            result = run_program(codes)
+            if result[0] == target:
+                return 100 * i + j
+            codes = codes2.copy()
+
+    raise ValueError("No solution found")
+
+
 def main(question: Literal["a", "b"], file_path: str):
     codes = get_inputs(file_path)
 
@@ -38,7 +52,8 @@ def main(question: Literal["a", "b"], file_path: str):
         return
 
     if question == "b":
-        pass
+        print(brute_force_inputs(codes, 19690720))
+        return
 
     raise ValueError(f"Invalid question: {question}")
 
