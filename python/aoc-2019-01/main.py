@@ -2,13 +2,20 @@ import argparse
 from typing import Literal
 
 
-def get_inputs(file_path):
+def get_inputs(file_path: str):
     masses = []
     with open(file_path, "r") as file:
         for line in file:
             mass = int(line.strip())
             masses.append(mass)
     return masses
+
+
+def get_fuel_recursive(mass: int):
+    if mass <= 0:
+        return 0
+    fuel_mass = max(mass // 3 - 2, 0)
+    return fuel_mass + get_fuel_recursive(fuel_mass)
 
 
 def main(question: Literal["a", "b"], file_path: str):
@@ -19,7 +26,8 @@ def main(question: Literal["a", "b"], file_path: str):
         return
 
     if question == "b":
-        raise NotImplementedError
+        print(sum(map(get_fuel_recursive, masses)))
+        return
 
     raise ValueError(f"Invalid question: {question}")
 
