@@ -18,6 +18,10 @@ class Opcode(Enum):
     MULTIPLY = 2
     INPUT = 3
     OUTPUT = 4
+    JUMP_IF_TRUE = 5
+    JUMP_IF_FALSE = 6
+    LESS_THAN = 7
+    EQUALS = 8
     END = 99
 
 
@@ -27,6 +31,10 @@ OPCODE_LENGTHS = {
     Opcode.MULTIPLY: 4,
     Opcode.INPUT: 2,
     Opcode.OUTPUT: 2,
+    Opcode.JUMP_IF_TRUE: 3,
+    Opcode.JUMP_IF_FALSE: 3,
+    Opcode.LESS_THAN: 4,
+    Opcode.EQUALS: 4,
     Opcode.END: 1,
 }
 
@@ -77,6 +85,7 @@ def run_program(codes: list[int]) -> None:
             raw_params = codes[i + 1 : i + OPCODE_LENGTHS[opcode]]
             params = process_params(codes, raw_params, modes)
             codes[codes[i + 3]] = params[0] + params[1]
+            i += OPCODE_LENGTHS[opcode]
 
         elif opcode == Opcode.MULTIPLY:
             assert len(modes) == OPCODE_LENGTHS[opcode] - 1
@@ -84,16 +93,65 @@ def run_program(codes: list[int]) -> None:
             raw_params = codes[i + 1 : i + OPCODE_LENGTHS[opcode]]
             params = process_params(codes, raw_params, modes)
             codes[codes[i + 3]] = params[0] * params[1]
+            i += OPCODE_LENGTHS[opcode]
 
         elif opcode == Opcode.INPUT:
             assert len(modes) == OPCODE_LENGTHS[opcode] - 1
             assert modes[0] == ParameterMode.POSITION
             codes[codes[i + 1]] = int(input("Enter input: "))
+            i += OPCODE_LENGTHS[opcode]
 
         elif opcode == Opcode.OUTPUT:
             assert len(modes) == OPCODE_LENGTHS[opcode] - 1
             param = process_params(codes, [codes[i + 1]], modes)
             print(param)
+            i += OPCODE_LENGTHS[opcode]
+
+        elif opcode == Opcode.JUMP_IF_TRUE:
+            assert len(modes) == OPCODE_LENGTHS[opcode] - 1
+            raw_params = codes[i + 1 : i + OPCODE_LENGTHS[opcode]]
+            params = process_params(codes, raw_params, modes)
+
+            if params[0] != 0:
+                i = params[1]
+            else:
+                i += OPCODE_LENGTHS[opcode]
+
+        elif opcode == Opcode.JUMP_IF_FALSE:
+            assert len(modes) == OPCODE_LENGTHS[opcode] - 1
+            raw_params = codes[i + 1 : i + OPCODE_LENGTHS[opcode]]
+            params = process_params(codes, raw_params, modes)
+
+            if params[0] == 0:
+                i = params[1]
+            else:
+                i += OPCODE_LENGTHS[opcode]
+
+        elif opcode == Opcode.LESS_THAN:
+            assert len(modes) == OPCODE_LENGTHS[opcode] - 1
+            assert modes[2] == ParameterMode.POSITION
+            raw_params = codes[i + 1 : i + OPCODE_LENGTHS[opcode]]
+            params = process_params(codes, raw_params, modes)
+
+            if params[0] < params[1]:
+                codes[codes[i + 3]] = 1
+            else:
+                codes[codes[i + 3]] = 0
+
+            i += OPCODE_LENGTHS[opcode]
+
+        elif opcode == Opcode.EQUALS:
+            assert len(modes) == OPCODE_LENGTHS[opcode] - 1
+            assert modes[2] == ParameterMode.POSITION
+            raw_params = codes[i + 1 : i + OPCODE_LENGTHS[opcode]]
+            params = process_params(codes, raw_params, modes)
+
+            if params[0] == params[1]:
+                codes[codes[i + 3]] = 1
+            else:
+                codes[codes[i + 3]] = 0
+
+            i += OPCODE_LENGTHS[opcode]
 
         elif opcode == Opcode.END:
             print("Opcode 99: END")
@@ -102,20 +160,13 @@ def run_program(codes: list[int]) -> None:
         else:
             raise ValueError(f"Invalid opcode: {opcode}")
 
-        i += OPCODE_LENGTHS[opcode]
-
 
 def main(question: Literal["a", "b"], file_path: str):
     codes = get_inputs(file_path)
+    del question
+    print("No question need be supplied, use the input instead.")
 
-    if question == "a":
-        run_program(codes)
-
-    elif question == "b":
-        pass
-
-    else:
-        raise ValueError(f"Invalid question: {question}")
+    run_program(codes)
 
 
 if __name__ == "__main__":
