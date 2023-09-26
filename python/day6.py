@@ -40,14 +40,31 @@ def parse_orbit_map(file_path: str) -> Planet:
     return get_root_node(orbit_map)
 
 
-def planet_distance():
-    pass
-
-
 def count_orbits(root: Planet, depth: int = 0) -> int:
     if root.children is None:
         return depth
     return depth + sum(map(lambda child: count_orbits(child, depth + 1), root.children))
+
+
+def get_path_to_root(planet: Planet, root: Planet) -> list[str]:
+    """DFS to find the from root to the planet, returning the list of planets on the path."""
+
+    if root.children is None:
+        return []
+    for child in root.children:
+        if child.name == planet.name:
+            return [root.name] + get_path_to_root(planet, child)
+    for child in root.children:
+        path = get_path_to_root(planet, child)
+        if path:
+            return [root.name] + path
+    return []
+
+
+def distance_to_santa(root: Planet) -> int:
+    root_to_you = get_path_to_root(Planet("YOU"), root)
+    root_to_santa = get_path_to_root(Planet("SAN"), root)
+    return len(set(root_to_you) ^ set(root_to_santa))
 
 
 def main(question: Literal["a", "b"], file_path: str):
@@ -58,7 +75,7 @@ def main(question: Literal["a", "b"], file_path: str):
         return
 
     if question == "b":
-        print(planet_distance())
+        print(distance_to_santa(root))
         return
 
     raise ValueError(f"Invalid question: {question}")
