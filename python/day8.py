@@ -37,6 +37,33 @@ class SpaceImage:
             layers.append([item for sublist in layer for item in sublist])
         return layers
 
+    def render_image(self) -> None:
+        """Convert to (H x W) by interpreting the transparency map:
+        0 -> black, 1 -> white, 2 -> transparent. Layer 0 is in the
+        front, and transparent pixels are overridden by the first
+        colour underneath them."""
+
+        image = self.layers[0]
+        for layer in self.layers[1:]:
+            for i, row in enumerate(layer):
+                for j, pixel in enumerate(row):
+                    if image[i][j] == 2:
+                        image[i][j] = pixel
+
+        # replace 0s with spaces and 1s with hashes for readability
+
+        for i, row in enumerate(image):
+            for j, pixel in enumerate(row):
+                if pixel == 0:
+                    image[i][j] = " "
+                elif pixel == 1:
+                    image[i][j] = "#"
+
+        for row in image:
+            print("")
+            for pixel in row:
+                print(pixel, end="")
+
 
 def get_input_data(file_path: str) -> list[int]:
     with open(file_path, "r") as f:
@@ -66,7 +93,7 @@ def main(question: Literal["a", "b"], file_path: str):
         print(f"Answer: {num_ones * num_twos}")
 
     elif question == "b":
-        pass
+        image.render_image()
 
     else:
         raise ValueError(f"Invalid question: {question}")
