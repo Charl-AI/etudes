@@ -1,5 +1,4 @@
 import argparse
-from collections import defaultdict
 from enum import Enum
 from typing import Literal, NamedTuple
 
