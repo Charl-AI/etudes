@@ -56,13 +56,13 @@ def move_robot(
     return Position(x, y), orientation
 
 
-def run_robot(state: ProgramState):
+def run_robot(state: ProgramState, start_color: Color = Color.BLACK):
     signal = StopSignal.WAITING
     position = Position(0, 0)
     orientation = Orientation.UP
     painted = {}
 
-    inputs = [0]  # start on a black panel
+    inputs = [start_color.value]
     while signal != StopSignal.HALTED:
         signal, state, outputs = run_program(inputs, state)
         if len(outputs) != 2:
@@ -82,6 +82,27 @@ def run_robot(state: ProgramState):
     return painted
 
 
+def print_painted(painted):
+    min_x = min(p.x for p in painted)
+    max_x = max(p.x for p in painted)
+    min_y = min(p.y for p in painted)
+    max_y = max(p.y for p in painted)
+    for y in range(max_y, min_y - 1, -1):  # type: ignore
+        for x in range(min_x, max_x + 1):  # type: ignore
+            position = Position(x, y)
+            if position in painted:
+                color = painted[position]
+                if color == Color.BLACK:
+                    print(" ", end="")
+                elif color == Color.WHITE:
+                    print("#", end="")
+                else:
+                    raise ValueError(f"Invalid color: {color}")
+            else:
+                print(" ", end="")
+        print()
+
+
 def main(question: Literal["a", "b", "tests"], file_path: str):
     memory = get_program(file_path)
 
@@ -89,6 +110,15 @@ def main(question: Literal["a", "b", "tests"], file_path: str):
         state = ProgramState(memory, 0, 0)
         painted = run_robot(state)
         print(f"Part 1: {len(painted)}")
+
+    elif question == "b":
+        state = ProgramState(memory, 0, 0)
+        painted = run_robot(state, start_color=Color.WHITE)
+        print("Part 2:")
+        print_painted(painted)
+
+    else:
+        raise ValueError(f"Invalid question: {question}")
 
 
 if __name__ == "__main__":
