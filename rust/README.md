@@ -8,7 +8,7 @@ We use cargo to build and run the code. Cargo is not really built for small scri
 
 ```bash
 # create a cargo project for day 1
-cargo new day01
+cargo new rust/day01
 
 # enter project
 cd rust/day01
