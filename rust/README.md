@@ -7,8 +7,8 @@ We do the 2022 problems with the venerable rust!
 We use cargo to build and run the code. Cargo is not really built for small scripts so we have to make a whole project directory for each challenge:
 
 ```bash
-cargo new day01
 # create a cargo project for day 1
+cargo new day01
 
 # enter project
 cd rust/day01
