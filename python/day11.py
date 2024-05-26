@@ -1,8 +1,9 @@
-import argparse
 from enum import Enum
 from typing import Literal, NamedTuple
 
 from intcode import ProgramState, StopSignal, get_program, run_program
+
+INPUT_FILE = "data/2019/day11.txt"
 
 
 class Color(Enum):
@@ -102,29 +103,20 @@ def print_painted(painted):
         print()
 
 
-def main(question: Literal["a", "b", "tests"], file_path: str):
+def main(file_path: str):
     memory = get_program(file_path)
 
-    if question == "a":
-        state = ProgramState(memory, 0, 0)
-        painted = run_robot(state)
-        print(f"Part 1: {len(painted)}")
+    state = ProgramState(memory, 0, 0)
+    painted = run_robot(state)
+    print("Solution to part a:")
+    print(f"Part 1: {len(painted)}")
 
-    elif question == "b":
-        state = ProgramState(memory, 0, 0)
-        painted = run_robot(state, start_color=Color.WHITE)
-        print("Part 2:")
-        print_painted(painted)
-
-    else:
-        raise ValueError(f"Invalid question: {question}")
+    state = ProgramState(memory, 0, 0)
+    painted = run_robot(state, start_color=Color.WHITE)
+    print("Solution to part a:")
+    print("Part 2:")
+    print_painted(painted)
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser()
-    parser.add_argument("-q", type=str, default="a", help="Question part (a or b).")
-    parser.add_argument("-f", type=str, default="input.txt", help="Path to input file")
-    args = parser.parse_args()
-    question = args.q
-    filepath = args.f
-    main(question, filepath)
+    main(INPUT_FILE)

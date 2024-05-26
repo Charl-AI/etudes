@@ -1,5 +1,4 @@
-import argparse
-from typing import Literal
+INPUT_FILE = "data/2019/day01.txt"
 
 
 def get_inputs(file_path: str):
@@ -18,25 +17,15 @@ def get_fuel_recursive(mass: int):
     return fuel_mass + get_fuel_recursive(fuel_mass)
 
 
-def main(question: Literal["a", "b"], file_path: str):
+def main(file_path: str):
     masses = get_inputs(file_path)
 
-    if question == "a":
-        print(sum(map(lambda mass: mass // 3 - 2, masses)))
-        return
+    print("Solution to part a:")
+    print(sum(map(lambda mass: mass // 3 - 2, masses)))
 
-    if question == "b":
-        print(sum(map(get_fuel_recursive, masses)))
-        return
-
-    raise ValueError(f"Invalid question: {question}")
+    print("Solution to part b:")
+    print(sum(map(get_fuel_recursive, masses)))
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser()
-    parser.add_argument("-q", type=str, default="a", help="Question part (a or b).")
-    parser.add_argument("-f", type=str, default="input.txt", help="Path to input file")
-    args = parser.parse_args()
-    question = args.q
-    filepath = args.f
-    main(question, filepath)
+    main(INPUT_FILE)

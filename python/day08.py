@@ -1,5 +1,4 @@
-import argparse
-from typing import Literal
+INPUT_FILE = "data/2019/day08.txt"
 
 
 class SpaceImage:
@@ -81,29 +80,20 @@ def argmin(lst: list[int]) -> int:
     return min(range(len(lst)), key=lst.__getitem__)
 
 
-def main(question: Literal["a", "b"], file_path: str):
+def main(file_path: str):
     data = get_input_data(file_path)
     image = SpaceImage(data, 6, 25)
 
-    if question == "a":
-        zeros_per_layer = count_zeros_per_layer(image)
-        min_layer = image.flatten_layers()[argmin(zeros_per_layer)]
-        num_ones = min_layer.count(1)
-        num_twos = min_layer.count(2)
-        print(f"Answer: {num_ones * num_twos}")
+    zeros_per_layer = count_zeros_per_layer(image)
+    min_layer = image.flatten_layers()[argmin(zeros_per_layer)]
+    num_ones = min_layer.count(1)
+    num_twos = min_layer.count(2)
+    print("Solution to part a:")
+    print(f"Answer: {num_ones * num_twos}")
 
-    elif question == "b":
-        image.render_image()
-
-    else:
-        raise ValueError(f"Invalid question: {question}")
+    print("Solution to part b:")
+    image.render_image()
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser()
-    parser.add_argument("-q", type=str, default="a", help="Question part (a or b).")
-    parser.add_argument("-f", type=str, default="input.txt", help="Path to input file")
-    args = parser.parse_args()
-    question = args.q
-    filepath = args.f
-    main(question, filepath)
+    main(INPUT_FILE)

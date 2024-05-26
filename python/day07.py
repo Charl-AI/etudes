@@ -1,8 +1,9 @@
-import argparse
 import copy
 from enum import Enum
 from itertools import permutations
 from typing import Literal
+
+INPUT_FILE = "data/2019/day07.txt"
 
 
 def get_inputs(file_path: str) -> list[int]:
@@ -249,34 +250,25 @@ def run_amplifier_loop(codes: list[int], phase_settings: list[int]) -> int:
                 return output
 
 
-def main(question: Literal["a", "b"], file_path: str):
+def main(file_path: str):
     codes = get_inputs(file_path)
 
-    if question == "a":
-        max_output = 0
-        for phase_settings in list(permutations(range(5))):
-            output = run_amplifier_chain(codes, phase_settings)  # type: ignore
-            if output > max_output:
-                max_output = output
-        print(f"Max output: {max_output}")
+    max_output = 0
+    for phase_settings in list(permutations(range(5))):
+        output = run_amplifier_chain(codes, phase_settings)  # type: ignore
+        if output > max_output:
+            max_output = output
+    print("Solution to part a:")
+    print(f"Max output: {max_output}")
 
-    elif question == "b":
-        max_output = 0
-        for phase_settings in list(permutations(range(5, 10))):
-            output = run_amplifier_loop(codes, phase_settings)  # type: ignore
-            if output > max_output:
-                max_output = output
-        print(f"Max output: {max_output}")
-
-    else:
-        raise ValueError(f"Invalid question: {question}")
+    max_output = 0
+    for phase_settings in list(permutations(range(5, 10))):
+        output = run_amplifier_loop(codes, phase_settings)  # type: ignore
+        if output > max_output:
+            max_output = output
+    print("Solution to part b:")
+    print(f"Max output: {max_output}")
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser()
-    parser.add_argument("-q", type=str, default="a", help="Question part (a or b).")
-    parser.add_argument("-f", type=str, default="input.txt", help="Path to input file")
-    args = parser.parse_args()
-    question = args.q
-    filepath = args.f
-    main(question, filepath)
+    main(INPUT_FILE)

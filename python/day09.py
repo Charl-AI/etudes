@@ -1,7 +1,8 @@
-import argparse
 from collections import defaultdict
 from enum import Enum
-from typing import Literal, NamedTuple
+from typing import NamedTuple
+
+INPUT_FILE = "data/2019/day09.txt"
 
 
 def get_program(file_path: str) -> dict[int, int]:
@@ -247,47 +248,39 @@ TEST_2 = [1102, 34915192, 34915192, 7, 4, 7, 99, 0]
 TEST_3 = [104, 1125899906842624, 99]
 
 
-def main(question: Literal["a", "b", "tests"], file_path: str):
+def tests():
+    test_memory_1 = defaultdict(int, {i: x for i, x in enumerate(TEST_1)})
+    signal, _, outputs = run_program(test_memory_1, inputs=[])
+    assert signal == StopSignal.HALTED
+    assert outputs == TEST_1
+    print("Test 1 passed!")
+
+    test_memory_2 = defaultdict(int, {i: x for i, x in enumerate(TEST_2)})
+    signal, _, outputs = run_program(test_memory_2, inputs=[])
+    assert signal == StopSignal.HALTED
+    assert len(str(outputs[0])) == 16
+    print("Test 2 passed!")
+
+    test_memory_3 = defaultdict(int, {i: x for i, x in enumerate(TEST_3)})
+    signal, _, outputs = run_program(test_memory_3, inputs=[])
+    assert signal == StopSignal.HALTED
+    assert outputs[0] == TEST_3[1]
+    print("Test 3 passed!")
+
+
+def main(file_path: str):
     memory = get_program(file_path)
 
-    if question == "a":
-        signal, _, outputs = run_program(memory, inputs=[1])
-        assert signal == StopSignal.HALTED
-        print(f"Part 1: {outputs}")
+    signal, _, outputs = run_program(memory, inputs=[1])
+    assert signal == StopSignal.HALTED
+    print("Solution to part a:")
+    print(f"Part 1: {outputs}")
 
-    elif question == "b":
-        signal, _, outputs = run_program(memory, inputs=[2])
-        assert signal == StopSignal.HALTED
-        print(f"Part 2: {outputs}")
-
-    elif question == "tests":
-        test_memory_1 = defaultdict(int, {i: x for i, x in enumerate(TEST_1)})
-        signal, _, outputs = run_program(test_memory_1, inputs=[])
-        assert signal == StopSignal.HALTED
-        assert outputs == TEST_1
-        print("Test 1 passed!")
-
-        test_memory_2 = defaultdict(int, {i: x for i, x in enumerate(TEST_2)})
-        signal, _, outputs = run_program(test_memory_2, inputs=[])
-        assert signal == StopSignal.HALTED
-        assert len(str(outputs[0])) == 16
-        print("Test 2 passed!")
-
-        test_memory_3 = defaultdict(int, {i: x for i, x in enumerate(TEST_3)})
-        signal, _, outputs = run_program(test_memory_3, inputs=[])
-        assert signal == StopSignal.HALTED
-        assert outputs[0] == TEST_3[1]
-        print("Test 3 passed!")
-
-    else:
-        raise ValueError(f"Invalid question: {question}")
+    signal, _, outputs = run_program(memory, inputs=[2])
+    assert signal == StopSignal.HALTED
+    print("Solution to part b:")
+    print(f"Part 2: {outputs}")
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser()
-    parser.add_argument("-q", type=str, default="a", help="Question part (a or b).")
-    parser.add_argument("-f", type=str, default="input.txt", help="Path to input file")
-    args = parser.parse_args()
-    question = args.q
-    filepath = args.f
-    main(question, filepath)
+    main(INPUT_FILE)

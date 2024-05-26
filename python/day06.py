@@ -1,8 +1,9 @@
 from __future__ import annotations
 
-import argparse
 from dataclasses import dataclass
 from typing import Literal
+
+INPUT_FILE = "data/2019/day06.txt"
 
 
 @dataclass
@@ -67,25 +68,15 @@ def distance_to_santa(root: Planet) -> int:
     return len(set(root_to_you) ^ set(root_to_santa))
 
 
-def main(question: Literal["a", "b"], file_path: str):
+def main(file_path: str):
     root = parse_orbit_map(file_path)
 
-    if question == "a":
-        print(count_orbits(root))
-        return
+    print("Solution to part a:")
+    print(count_orbits(root))
 
-    if question == "b":
-        print(distance_to_santa(root))
-        return
-
-    raise ValueError(f"Invalid question: {question}")
+    print("Solution to part b:")
+    print(distance_to_santa(root))
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser()
-    parser.add_argument("-q", type=str, default="a", help="Question part (a or b).")
-    parser.add_argument("-f", type=str, default="input.txt", help="Path to input file")
-    args = parser.parse_args()
-    question = args.q
-    filepath = args.f
-    main(question, filepath)
+    main(INPUT_FILE)

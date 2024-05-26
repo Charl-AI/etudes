@@ -1,5 +1,6 @@
-import argparse
-from typing import Literal
+import copy
+
+INPUT_FILE = "data/2019/day02.txt"
 
 
 def get_inputs(file_path: str) -> list[int]:
@@ -41,28 +42,20 @@ def brute_force_inputs(codes: list[int], target: int) -> int:
     raise ValueError("No solution found")
 
 
-def main(question: Literal["a", "b"], file_path: str):
+def main(file_path: str):
     codes = get_inputs(file_path)
 
-    if question == "a":
-        codes[1] = 12
-        codes[2] = 2
-        run_program(codes)
-        print(codes[0])
-        return
+    part_a_codes = copy.deepcopy(codes)
+    part_a_codes[1] = 12
+    part_a_codes[2] = 2
+    run_program(part_a_codes)
+    print("Solution to part a:")
+    print(part_a_codes[0])
 
-    if question == "b":
-        print(brute_force_inputs(codes, 19690720))
-        return
-
-    raise ValueError(f"Invalid question: {question}")
+    part_b_codes = copy.deepcopy(codes)
+    print("Solution to part b:")
+    print(brute_force_inputs(part_b_codes, 19690720))
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser()
-    parser.add_argument("-q", type=str, default="a", help="Question part (a or b).")
-    parser.add_argument("-f", type=str, default="input.txt", help="Path to input file")
-    args = parser.parse_args()
-    question = args.q
-    filepath = args.f
-    main(question, filepath)
+    main(INPUT_FILE)

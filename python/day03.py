@@ -1,5 +1,6 @@
-import argparse
-from typing import List, Literal, Tuple
+from typing import List, Tuple
+
+INPUT_FILE = "data/2019/day03.txt"
 
 
 def get_inputs(file_path: str) -> List[List[str]]:
@@ -54,7 +55,7 @@ def combined_steps_to_vertex(
     return line_1_steps + line_2_steps
 
 
-def main(question: Literal["a", "b"], file_path: str):
+def main(file_path: str):
     lines = get_inputs(file_path)
     assert len(lines) == 2
     line_1_coords = parse_line(lines[0])
@@ -62,30 +63,22 @@ def main(question: Literal["a", "b"], file_path: str):
 
     intersections = set(line_1_coords) & set(line_2_coords)
 
-    if question == "a":
-        manhattan_distances = list(map(lambda x: abs(x[0]) + abs(x[1]), intersections))
-        manhattan_distances.remove(0)
-        print(min(manhattan_distances))
+    manhattan_distances = list(map(lambda x: abs(x[0]) + abs(x[1]), intersections))
+    manhattan_distances.remove(0)
 
-    elif question == "b":
-        sum_distances = list(
-            map(
-                lambda x: combined_steps_to_vertex(line_1_coords, line_2_coords, x),
-                intersections,
-            )
+    print("Solution to part a:")
+    print(min(manhattan_distances))
+
+    sum_distances = list(
+        map(
+            lambda x: combined_steps_to_vertex(line_1_coords, line_2_coords, x),
+            intersections,
         )
-        sum_distances.remove(0)
-        print(min(sum_distances))
-
-    else:
-        raise ValueError("Invalid question")
+    )
+    sum_distances.remove(0)
+    print("Solution to part b:")
+    print(min(sum_distances))
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser()
-    parser.add_argument("-q", type=str, default="a", help="Question part (a or b).")
-    parser.add_argument("-f", type=str, default="input.txt", help="Path to input file")
-    args = parser.parse_args()
-    question = args.q
-    filepath = args.f
-    main(question, filepath)
+    main(INPUT_FILE)

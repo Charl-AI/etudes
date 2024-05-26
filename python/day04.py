@@ -1,6 +1,3 @@
-import argparse
-from typing import Literal
-
 PUZZLE_INPUT = "183564-657474"
 
 
@@ -34,10 +31,17 @@ def no_triple_digits(number: int) -> bool:
     return False
 
 
-def main(question: Literal["a", "b"], file_path: str):
-    del file_path
-    print("no file needed for this question")
+def solve_part_a():
+    range_start, range_end = [int(n) for n in PUZZLE_INPUT.split("-")]
+    candidate_numbers = range(range_start, range_end + 1)
 
+    monotonic_numbers = filter(monotonic_digits, candidate_numbers)
+    monotonic_and_doubles = filter(contains_double_digit, monotonic_numbers)
+
+    return len(list(monotonic_and_doubles))
+
+
+def solve_part_b():
     range_start, range_end = [int(n) for n in PUZZLE_INPUT.split("-")]
     candidate_numbers = range(range_start, range_end + 1)
 
@@ -45,21 +49,16 @@ def main(question: Literal["a", "b"], file_path: str):
     monotonic_and_doubles = filter(contains_double_digit, monotonic_numbers)
     monotonic_doubles_no_triples = filter(no_triple_digits, monotonic_and_doubles)
 
-    if question == "a":
-        print(len(list(monotonic_and_doubles)))
+    return len(list(monotonic_doubles_no_triples))
 
-    elif question == "b":
-        print(len(list(monotonic_doubles_no_triples)))
 
-    else:
-        raise ValueError(f"Invalid question: {question}")
+def main():
+    print("Solution to part a:")
+    print(solve_part_a())
+
+    print("Solution to part b:")
+    print(solve_part_b())
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser()
-    parser.add_argument("-q", type=str, default="a", help="Question part (a or b).")
-    parser.add_argument("-f", type=str, default="input.txt", help="Path to input file")
-    args = parser.parse_args()
-    question = args.q
-    filepath = args.f
-    main(question, filepath)
+    main()

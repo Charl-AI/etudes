@@ -1,6 +1,7 @@
-import argparse
 import math
-from typing import Literal, NamedTuple
+from typing import NamedTuple
+
+INPUT_FILE = "data/2019/day10.txt"
 
 
 class Asteroid(NamedTuple):
@@ -112,28 +113,20 @@ def parse_test_input(test_array: list[list[str]]) -> set[Asteroid]:
     return asteroids
 
 
-def main(question: Literal["a", "b", "tests"], file_path: str):
+def tests():
+    test_1 = parse_test_input(TEST_CASE)
+    print(solve_part_a(test_1))
+
+
+def main(file_path: str):
     asteroids = parse_input(file_path)
 
-    if question == "a":
-        print(solve_part_a(asteroids))
+    print("Solution to part a:")
+    print(solve_part_a(asteroids))
 
-    elif question == "b":
-        print(solve_part_b(asteroids))
-
-    elif question == "tests":
-        test_1 = parse_test_input(TEST_CASE)
-        print(solve_part_a(test_1))
-
-    else:
-        raise ValueError(f"Invalid question: {question}")
+    print("Solution to part b:")
+    print(solve_part_b(asteroids))
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser()
-    parser.add_argument("-q", type=str, default="a", help="Question part (a or b).")
-    parser.add_argument("-f", type=str, default="input.txt", help="Path to input file")
-    args = parser.parse_args()
-    question = args.q
-    filepath = args.f
-    main(question, filepath)
+    main(INPUT_FILE)

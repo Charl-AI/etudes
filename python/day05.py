@@ -1,6 +1,7 @@
-import argparse
 from enum import Enum
 from typing import Literal
+
+INPUT_FILE = "data/2019/day05.txt"
 
 
 def get_inputs(file_path: str) -> list[int]:
@@ -161,19 +162,10 @@ def run_program(codes: list[int]) -> None:
             raise ValueError(f"Invalid opcode: {opcode}")
 
 
-def main(question: Literal["a", "b"], file_path: str):
+def main(file_path: str):
     codes = get_inputs(file_path)
-    del question
-    print("No question need be supplied, use the input instead.")
-
     run_program(codes)
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser()
-    parser.add_argument("-q", type=str, default="a", help="Question part (a or b).")
-    parser.add_argument("-f", type=str, default="input.txt", help="Path to input file")
-    args = parser.parse_args()
-    question = args.q
-    filepath = args.f
-    main(question, filepath)
+    main(INPUT_FILE)

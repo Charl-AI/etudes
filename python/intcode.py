@@ -1,4 +1,4 @@
-"""The intcode computer is complete at the end of day 9. This file contains the 
+"""The intcode computer is complete at the end of day 9. This file contains the
 completed computer for use in future days."""
 
 from collections import defaultdict
