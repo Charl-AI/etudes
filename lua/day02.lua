@@ -1,19 +1,4 @@
-local function parse_args()
-	local question = arg[1]
-	local filepath = arg[2]
-
-	if question == nil or (question ~= "a" and question ~= "b") then
-		print("Invalid question. The first CLI argument must be either 'a' or 'b'.")
-		os.exit(1)
-	end
-
-	if filepath == nil then
-		print("Invalid filepath. The second CLI argument must be a valid filepath.")
-		os.exit(1)
-	end
-
-	return question, filepath
-end
+INPUT_FILE = "data/2021/day02.txt"
 
 local function parse_file(filename)
 	local directions = {} -- either up, forward, down
@@ -35,7 +20,7 @@ local function parse_file(filename)
 		table.insert(directions, Dir)
 		table.insert(amounts, tonumber(N))
 	end
-	print("Loaded " .. #directions .. " instructions from " .. arg[2])
+	print("Loaded " .. #directions .. " instructions from " .. filename)
 	return directions, amounts
 end
 
@@ -81,11 +66,10 @@ local function solve_part_b(directions, amounts)
 	return x * z
 end
 
-local question, filepath = parse_args()
-local directions, amounts = parse_file(filepath)
+local directions, amounts = parse_file(INPUT_FILE)
 
-if question == "a" then
-	print(solve_part_a(directions, amounts))
-else
-	print(solve_part_b(directions, amounts))
-end
+print("Solution to part a:")
+print(solve_part_a(directions, amounts))
+
+print("Solution to part b:")
+print(solve_part_b(directions, amounts))

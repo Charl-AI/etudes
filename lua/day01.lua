@@ -1,19 +1,4 @@
-local function parse_args()
-	local question = arg[1]
-	local filepath = arg[2]
-
-	if question == nil or (question ~= "a" and question ~= "b") then
-		print("Invalid question. The first CLI argument must be either 'a' or 'b'.")
-		os.exit(1)
-	end
-
-	if filepath == nil then
-		print("Invalid filepath. The second CLI argument must be a valid filepath.")
-		os.exit(1)
-	end
-
-	return question, filepath
-end
+INPUT_FILE = "data/2021/day01.txt"
 
 local function solve_part_a(m)
 	local num_increases = 0
@@ -38,20 +23,18 @@ local function solve_part_b(m)
 	return num_increases
 end
 
-local question, filepath = parse_args()
-
 -- measurements are lines in the input file
 -- here we read into a table/list
 local measurements = {}
 
-for line in io.lines(filepath) do
+for line in io.lines(INPUT_FILE) do
 	table.insert(measurements, tonumber(line))
 end
 
-print("Loaded " .. #measurements .. " measurements from " .. filepath)
+print("Loaded " .. #measurements .. " measurements from " .. INPUT_FILE)
 
-if question == "a" then
-	print(solve_part_a(measurements))
-else
-	print(solve_part_b(measurements))
-end
+print("Solution to part a:")
+print(solve_part_a(measurements))
+
+print("Solution to part b:")
+print(solve_part_b(measurements))

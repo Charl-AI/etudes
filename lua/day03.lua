@@ -1,19 +1,4 @@
-local function parse_args()
-	local question = arg[1]
-	local filepath = arg[2]
-
-	if question == nil or (question ~= "a" and question ~= "b") then
-		print("Invalid question. The first CLI argument must be either 'a' or 'b'.")
-		os.exit(1)
-	end
-
-	if filepath == nil then
-		print("Invalid filepath. The second CLI argument must be a valid filepath.")
-		os.exit(1)
-	end
-
-	return question, filepath
-end
+INPUT_FILE = "data/2021/day03.txt"
 
 -- parse file into a matrix
 local function parse_file(filepath)
@@ -58,11 +43,17 @@ local function solve_part_a(matrix)
 	return tonumber(gamma, 2) * tonumber(epsilon, 2)
 end
 
-local question, filepath = parse_args()
-local matrix = parse_file(filepath)
+local function solve_part_b(matrix)
+	local oxygen = "" --
+	local scrubber = ""
 
-if question == "a" then
-	print(solve_part_a(matrix))
-else
-	print("Part B not implemented yet.")
+	return tonumber(oxygen, 2) * tonumber(scrubber, 2)
 end
+
+local matrix = parse_file(INPUT_FILE)
+
+print("Solution to part a:")
+print(solve_part_a(matrix))
+
+print("Solution to part b:")
+print("Part B not implemented yet.")

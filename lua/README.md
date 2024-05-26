@@ -1,10 +1,14 @@
 # Lua
 
-We solve the 2021 problems in lua. We use lua 5.4.6. Note that this is slightly different to the version neovim uses (5.1).
+The 2021 problems are solved with lua 5.1.5. This is the version that comes embedded in neovim.
 
-## Basics
+Lua is a very simple language. It has one data structure, [tables](https://www.lua.org/pil/11.3.html), and 8 [types](https://www.lua.org/pil/2.html). Most data structures may be implemented through tables. Also note that the `number` type uses double precision floats to represent _all_ numbers.
 
-We implement scripts with the same interface to solve all problems. Run these scripts with `lua main.lua a input.txt` (change a to b for part b).
+## Running
 
-Lua is a very simple language. It has one data structure, [tables](https://www.lua.org/pil/11.3.html), and 8 [types](https://www.lua.org/pil/2.html). Most data structures may be implemented through tables. Also note that the `number` type uses double precision floats to represent *all* numbers.
+Starting in the root of this repo, simply run:
 
+```bash
+lua lua/day01.lua
+
+```
