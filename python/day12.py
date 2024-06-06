@@ -65,6 +65,44 @@ def apply_velocity(moons: list[Moon]) -> list[Moon]:
     return updated_moons
 
 
+def energy_t1k(moons: list[Moon]) -> int:
+    for _ in range(1000):
+        moons = apply_gravity(moons)
+        moons = apply_velocity(moons)
+    total_energy = sum(moon.energy() for moon in moons)
+    return total_energy
+
+
+def get_cycle_len(moons: list[Moon]) -> int:
+    # each axis is independent, so we can find the cycle length of each and take the lcm
+    # we will hit a cycle for an axis if the positions and velocities of all moons on that
+    # axis are the same as the starting conditions.
+    def get_state(moons):
+        return (
+            [(moon.position.x, moon.velocity.x) for moon in moons],
+            [(moon.position.y, moon.velocity.y) for moon in moons],
+            [(moon.position.z, moon.velocity.z) for moon in moons],
+        )
+
+    initial_state = get_state(moons)
+    cycle_lengths = [0, 0, 0]
+
+    iterations = 1
+    while not (cycle_lengths[0] and cycle_lengths[1] and cycle_lengths[2]):
+        moons = apply_gravity(moons)
+        moons = apply_velocity(moons)
+
+        state = get_state(moons)
+
+        for i in range(len(state)):
+            if state[i] == initial_state[i] and cycle_lengths[i] == 0:
+                cycle_lengths[i] = iterations
+
+        iterations += 1
+
+    return math.lcm(*cycle_lengths)
+
+
 def parse_input(file_path: str) -> list[Moon]:
     with open(file_path, "r") as file:
         moons = []
@@ -77,14 +115,21 @@ def parse_input(file_path: str) -> list[Moon]:
         return moons
 
 
+# test case part B answer 4686774924
+TEST_CASE = [
+    Moon(Position(-8, -10, 0), Velocity(0, 0, 0)),
+    Moon(Position(5, 5, 10), Velocity(0, 0, 0)),
+    Moon(Position(2, -7, 3), Velocity(0, 0, 0)),
+    Moon(Position(9, -8, -3), Velocity(0, 0, 0)),
+]
+
+
 def main(file_path: str):
     moons = parse_input(file_path)
 
-    for _ in range(1000):
-        moons = apply_gravity(moons)
-        moons = apply_velocity(moons)
-    total_energy = sum(moon.energy() for moon in moons)
-    print("Part a:", total_energy)
+    print(f"Part a: {energy_t1k(moons)}")
+    print(f"Part b: {get_cycle_len(moons)}")
+    # print(f"Test case: {get_cycle_len(TEST_CASE)}")
 
 
 if __name__ == "__main__":
