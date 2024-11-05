@@ -1,0 +1,13 @@
+pytorch-lightning==1.7.0
+torch==1.12.1
+torchvision==0.13.1
+jax==0.3.14
+jaxlib==0.3.14
+dm-haiku==0.0.7
+optax==0.1.3
+tensorflow==2.9.1
+tensorflow-datasets==4.6.0
+tqdm==4.64.0
+torchmetrics==0.9.3
+numpy==1.24.1
+pytest==7.2.1
