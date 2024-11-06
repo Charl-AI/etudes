@@ -1,4 +1,4 @@
-# Etudes
+# études
 
 Practicing programming in public.
 
