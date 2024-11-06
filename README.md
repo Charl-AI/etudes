@@ -5,7 +5,7 @@ Practicing programming in public.
 This monorepo contains the following projects:
 
 - `aoc/` - advent of code challenges.
-- `mnist/` - a simple MNIST classifier implemented in every language.
+- `mnist/` - MNIST digit classifiers implemented in various languages.
 - `sicp/` - exercise solutions for Structure and Interpretation of Computer Programs.
 
 The only rule for this repo is that external packages aren't allowed.
