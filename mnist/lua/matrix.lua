@@ -63,7 +63,7 @@ function Matrix:repr()
       else
         str = item:repr()
       end
-      result = result .. str .. " "
+      result = result .. str .. ", "
     end
     result = result .. "}\n"
   end
