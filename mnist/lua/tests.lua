@@ -97,6 +97,20 @@ local function test_matrix_addition()
   local z = matrix.Matrix:new({ { 4, 6 } })
 
   expect(z, x + y, "matrix addition")
+
+  local a = matrix.Matrix:new({ { autograd.Value:new(7), autograd.Value:new(8) } })
+  local b = matrix.Matrix:new({ { autograd.Value:new(9), autograd.Value:new(10) } })
+
+  -- c == d := (7+9, 8+10)
+  local c = matrix.Matrix:new({ { autograd.Value:new(16), autograd.Value:new(18) } })
+  local d = a + b
+
+  expect(c, d, "matrix addition with autograd (7,9) + (8,10)")
+
+  d:getitem({ 1, 1 }):backward()
+  expect(1, a:getitem({ 1, 1 }).grad, "gradient of 9+x wrt x")
+  expect(0, a:getitem({ 1, 2 }).grad, "gradient of 9+x wrt y")
+  expect(1, b:getitem({ 1, 1 }).grad, "gradient of 7+x wrt x")
 end
 
 test_matrix_addition()
@@ -113,6 +127,20 @@ local function test_matrix_multiplication()
   x:transpose()
 
   expect(b, y * x, "matmul y@x^T")
+
+  local t = matrix.Matrix:new({ { autograd.Value:new(1), autograd.Value:new(2) } })
+  local u = matrix.Matrix:new({ { autograd.Value:new(3), autograd.Value:new(4) } })
+  u:transpose()
+
+  -- v == w := 1*3 + 4*2
+  local v = matrix.Matrix:new({ { autograd.Value:new(11) } })
+  local w = t * u
+
+  expect(v, w, "matmul with autograd (1,3) @ (3,4)^T")
+  w:getitem({ 1, 1 }):backward()
+
+  expect(3, t:getitem({ 1, 1 }).grad, "gradient of 3x + 4*2 wrt x")
+  expect(2, u:getitem({ 2, 1 }).grad, "gradient of 3*1 + 2x wrt x")
 end
 
 test_matrix_multiplication()
