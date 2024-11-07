@@ -8,7 +8,7 @@ new language? Has PhD life turned your brain into mush that can only understand
 
 Here, I implement increasingly unorthodox MNIST classifiers in
 increasingly unorthodox languages. Since I am not using any external libraries,
-I also have to write everything from scratch, including dataloading, linear algebra,
+I have to write everything from scratch, including dataloading, linear algebra,
 autograd (if relevant) and model code.
 Note that none of the code in this repo leverages GPU acceleration.
 Speed is not the priority here.
