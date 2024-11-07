@@ -107,11 +107,10 @@ function Matrix:__mul(other)
   for i = 1, output_shape[1] do
     data[i] = {}
     for j = 1, output_shape[2] do
-      local sum = 0
-      for k = 1, self.shape[2] do
-        sum = sum + self:getitem({ i, k }) * other:getitem({ k, j })
+      data[i][j] = self:getitem({ i, 1 }) * other:getitem({ 1, j })
+      for k = 2, self.shape[2] do
+        data[i][j] = data[i][j] + self:getitem({ i, k }) * other:getitem({ k, j })
       end
-      data[i][j] = sum
     end
   end
 
