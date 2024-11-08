@@ -17,7 +17,6 @@ function Matrix:new(data)
   end
 
   out.data = data
-  out.transposed = false
   out.shape = { dim1, dim2 }
   return out
 end
@@ -38,15 +37,20 @@ function Matrix:__eq(other)
 end
 
 function Matrix:transpose()
-  -- transposing doesn't affect memory layout,
-  -- it just sets a flag to change how the getters
-  -- and setters are interpreted
-  self.shape = { self.shape[2], self.shape[1] }
-  if self.transposed == false then
-    self.transposed = true
-  else
-    self.transposed = false
+  local new_shape = { self.shape[2], self.shape[1] }
+  local data = {}
+  for i = 1, new_shape[1] do
+    data[i] = {}
   end
+
+  for i = 1, self.shape[1] do
+    for j = 1, self.shape[2] do
+      data[j][i] = self:getitem({ i, j })
+    end
+  end
+
+  local out = Matrix:new(data)
+  return out
 end
 
 function Matrix:repr()
@@ -72,16 +76,18 @@ function Matrix:repr()
 end
 
 function Matrix:getitem(idxs)
-  if self.transposed == true then
-    idxs = { idxs[2], idxs[1] } -- flip indices if transposed
-  end
+  assert(idxs[1] >= 1, "Index must be >= 1.")
+  assert(idxs[2] >= 1, "Index must be >= 1.")
+  assert(idxs[1] <= self.shape[1], "Attempted to index out of bounds.")
+  assert(idxs[2] <= self.shape[2], "Attempted to index out of bounds.")
   return self.data[idxs[1]][idxs[2]]
 end
 
 function Matrix:setitem(idxs, item)
-  if self.transposed == true then
-    idxs = { idxs[2], idxs[1] } -- flip indices if transposed
-  end
+  assert(idxs[1] >= 1, "Index must be >= 1.")
+  assert(idxs[2] >= 1, "Index must be >= 1.")
+  assert(idxs[1] <= self.shape[1], "Attempted to index out of bounds.")
+  assert(idxs[2] <= self.shape[2], "Attempted to index out of bounds.")
   self.data[idxs[1]][idxs[2]] = item
 end
 
