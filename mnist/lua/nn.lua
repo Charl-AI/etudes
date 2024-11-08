@@ -15,14 +15,16 @@ function Linear:new(in_dim, out_dim)
   for i = 1, in_dim do
     weights[i] = {}
     for j = 1, out_dim do
-      local w = math.random(-1, 1)
+      -- initialise to U[-0.5, 0.5] (very basic)
+      local w = math.random() - 0.5
       weights[i][j] = autograd.Value:new(w)
     end
   end
 
   local biases = {}
   for i = 1, out_dim do
-    local b = math.random(-1, 1)
+    -- initialise to U[-0.5, 0.5] (very basic)
+    local b = math.random() - 0.5
     biases[i] = autograd.Value:new(b)
   end
 
