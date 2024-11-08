@@ -192,6 +192,14 @@ local function test_linear()
   expect(2, m.weights:getitem({ 1, 1 }).grad, "grad of 2x + 3*0.2 + 0.3 wrt x")
   expect(3, m.weights:getitem({ 2, 1 }).grad, "grad of 2*0.1 + 3x + 0.3 wrt x")
   expect(1, m.biases:getitem({ 1, 1 }).grad, "grad of 2*0.1 + 3*0.2 + x wrt x")
+
+  m:sgd_update(0.01)
+  w = m.weights:detach()
+  b = m.biases:detach()
+
+  expect(0.08, w:getitem({ 1, 1 }), "sgd update: 0.1 - 0.01*2")
+  expect(0.17, w:getitem({ 2, 1 }), "sgd update: 0.2 - 0.01*3")
+  expect(0.29, b:getitem({ 1, 1 }), "sgd update: 0.3 - 0.01*1")
 end
 
 test_linear()
