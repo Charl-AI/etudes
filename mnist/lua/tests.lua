@@ -105,6 +105,7 @@ local function test_matrix_transpose()
   expect(x.shape[2], x:transpose().shape[1], "shape of transposed matrix")
   expect(x:getitem({ 1, 2 }), x:transpose():getitem({ 2, 1 }), "element of transposed matrix")
   expect(x:getitem({ 3, 1 }), x:transpose():getitem({ 1, 3 }), "element of transposed matrix")
+  expect(x, x:transpose():transpose(), "transpose round trip invariance")
 end
 
 test_matrix_transpose()
