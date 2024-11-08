@@ -98,8 +98,8 @@ function Value:__mul(other)
   table.insert(out._parents, other)
 
   local function _backward()
-    self.grad = other.data * out.grad
-    other.grad = self.data * out.grad
+    self.grad = self.grad + other.data * out.grad
+    other.grad = other.grad + self.data * out.grad
   end
 
   out._backward = _backward
