@@ -163,3 +163,35 @@ local function test_matrix_multiplication()
 end
 
 test_matrix_multiplication()
+
+local function test_linear()
+  local x = matrix.Matrix:new({ { 2, 3 } }) -- shape (1,2)
+
+  local m = nn.Linear:new(2, 1)
+  local w = matrix.Matrix:new({ { 0.1 }, { 0.2 } }) -- shape (2,1)
+  local b = matrix.Matrix:new({ { 0.3 } }) -- shape (1,1)
+
+  -- insert our known params for testing
+  m.weights = w
+  m.biases = b
+
+  -- y == x @ w + b := 2*0.1 + 3*0.2 + 0.3 = 1.1
+  local y = matrix.Matrix:new({ { 1.1 } })
+
+  expect(y, m:forward(x), "linear forward pass")
+
+  x = x:attach()
+  y = y:attach()
+  m.weights = m.weights:attach()
+  m.biases = m.biases:attach()
+
+  local z = m:forward(x)
+  expect(y, z, "forward pass with autograd")
+
+  z:getitem({ 1, 1 }):backward()
+  expect(2, m.weights:getitem({ 1, 1 }).grad, "grad of 2x + 3*0.2 + 0.3 wrt x")
+  expect(3, m.weights:getitem({ 2, 1 }).grad, "grad of 2*0.1 + 3x + 0.3 wrt x")
+  expect(1, m.biases:getitem({ 1, 1 }).grad, "grad of 2*0.1 + 3*0.2 + x wrt x")
+end
+
+test_linear()
