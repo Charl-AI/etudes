@@ -8,6 +8,17 @@ local function expect(expected, actual, msg)
   assert(expected == actual, message)
 end
 
+local function test_equality()
+  local x = autograd.Value:new(1)
+  local y = autograd.Value:new(1)
+  local z = autograd.Value:new(2)
+
+  expect(true, x == y, "equality of Value")
+  expect(true, x ~= z, "inequality of Value")
+end
+
+test_equality()
+
 local function test_relu()
   local x1 = autograd.Value:new(5)
   local y1 = x1:relu()
