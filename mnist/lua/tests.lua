@@ -88,10 +88,12 @@ test_matrix_attach_detach()
 local function test_matrix_equality()
   local x = matrix.Matrix:new({ { 1, 2 }, { 3, 4 } })
   local y = matrix.Matrix:new({ { 1, 2 }, { 3, 4 } })
-  local z = matrix.Matrix:new({ { 1, 2 } })
+  local z1 = matrix.Matrix:new({ { 1, 2 }, { 3, 5 } })
+  local z2 = matrix.Matrix:new({ { 1, 2 } })
 
   expect(true, x == y, "matrix equality")
-  expect(true, x ~= z, "matrix inequality")
+  expect(true, x ~= z1, "matrix inequality")
+  expect(true, x ~= z2, "matrix inequality")
 end
 
 test_matrix_equality()
