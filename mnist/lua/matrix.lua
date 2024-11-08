@@ -50,8 +50,8 @@ function Matrix:transpose()
 end
 
 function Matrix:repr()
-  local result = "Shape:" .. table.concat(self.shape, ", ")
-  result = result .. "\nData:\n"
+  local result = "(Matrix) Shape: (" .. table.concat(self.shape, ", ")
+  result = result .. "), Data:\n"
 
   for i = 1, self.shape[1] do
     result = result .. "{ "

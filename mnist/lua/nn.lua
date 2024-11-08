@@ -33,6 +33,13 @@ function Linear:new(in_dim, out_dim)
   return out
 end
 
+function Linear:repr()
+  local result = string.format("(Linear) in_dim: %i, out_dim: %i\n\n", self.in_dim, self.out_dim)
+  result = result .. string.format("Weights: %s\n", self.weights:repr())
+  result = result .. string.format("Biases: %s", self.biases:repr())
+  return result
+end
+
 function Linear:forward(x)
   -- x is shape (1, in_dim),
   -- w is shape (in_dim, out_dim)
@@ -78,9 +85,30 @@ function Mlp:new(in_dim, out_dim, depth, width)
   end
   layers[depth] = Linear:new(width, out_dim)
 
-  local out = setmetatable({}, Linear)
+  local out = setmetatable({}, Mlp)
+  out.in_dim = in_dim
+  out.out_dim = out_dim
+  out.depth = depth
+  out.width = width
   out.layers = layers
   return out
+end
+
+function Mlp:repr()
+  local result = string.format(
+    "(MLP) in_dim: %i, out_dim: %i, depth: %i, width: %i, layers:\n",
+    self.in_dim,
+    self.out_dim,
+    self.depth,
+    self.width
+  )
+  for i, layer in ipairs(self.layers) do
+    result = result .. string.format("(Linear) in_dim: %i, out_dim: %i", layer.in_dim, layer.out_dim)
+    if i < #self.layers then
+      result = result .. ", (Relu)\n"
+    end
+  end
+  return result
 end
 
 function Mlp:forward(x)
