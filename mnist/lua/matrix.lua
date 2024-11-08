@@ -1,5 +1,7 @@
 -- A very simple 2D matrix in pure lua
 
+local autograd = require("autograd")
+
 local M = {}
 
 local Matrix = {}
@@ -34,6 +36,34 @@ function Matrix:__eq(other)
     end
   end
   return true
+end
+
+-- convert a matrix of number elements to a matrix of autograd.Value elements
+function Matrix:attach()
+  local data = {}
+  for i = 1, self.shape[1] do
+    data[i] = {}
+    for j = 1, self.shape[2] do
+      local item = self:getitem({ i, j })
+      assert(type(item) == "number", "Can only attach a matrix of numbers")
+      data[i][j] = autograd.Value:new(item)
+    end
+  end
+  return Matrix:new(data)
+end
+
+-- convert a matrix of autograd.Value elements to a matrix of number elements
+function Matrix:detach()
+  local data = {}
+  for i = 1, self.shape[1] do
+    data[i] = {}
+    for j = 1, self.shape[2] do
+      local item = self:getitem({ i, j })
+      assert(type(item) == "table", "Can only detach a matrix of autograd.Values")
+      data[i][j] = item.data
+    end
+  end
+  return Matrix:new(data)
 end
 
 function Matrix:transpose()

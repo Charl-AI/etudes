@@ -62,6 +62,18 @@ end
 
 test_mul()
 
+local function test_matrix_attach_detach()
+  local x = matrix.Matrix:new({ { 1, 2 } })
+  local y = matrix.Matrix:new({ { autograd.Value:new(1), autograd.Value:new(2) } })
+
+  expect(y, x:attach(), "attaching matrix to graph")
+  expect(x, y:detach(), "detaching matrix from graph")
+  expect(x, x:attach():detach(), "attach-detach round-trip")
+  expect(y, y:detach():attach(), "detach-attach round-trip")
+end
+
+test_matrix_attach_detach()
+
 local function test_matrix_equality()
   local x = matrix.Matrix:new({ { 1, 2 }, { 3, 4 } })
   local y = matrix.Matrix:new({ { 1, 2 }, { 3, 4 } })
