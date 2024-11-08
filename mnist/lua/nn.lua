@@ -66,10 +66,10 @@ local function relu(x)
   assert(x.shape[1] == 1, "X must be shape (1,N)")
   local data = { {} }
   for i = 1, x.shape[2] do
-    data[1][i] = x.getitem({ 1, i }):relu()
+    data[1][i] = x:getitem({ 1, i }):relu()
   end
 
-  local out = matrix.Matrix(data)
+  local out = matrix.Matrix:new(data)
   return out
 end
 
