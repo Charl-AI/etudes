@@ -74,19 +74,12 @@ end
 test_matrix_equality()
 
 local function test_matrix_transpose()
-  local x = matrix.Matrix:new({ { 1, 2 }, { 3, 4 }, { 5, 6 } })
+  local x = matrix.Matrix:new({ { 1, 2 }, { 3, 4 }, { 5, 6 } }) -- shape (3,2)
 
-  expect(3, x.shape[1], "shape of first dimension")
-  expect(2, x.shape[2], "shape of second dimension")
-  expect(2, x:getitem({ 1, 2 }), "element at index (1,2)")
-  expect(5, x:getitem({ 3, 1 }), "element at index (3,1)")
-
-  x:transpose()
-
-  expect(2, x.shape[1], "shape of first dimension")
-  expect(3, x.shape[2], "shape of second dimension")
-  expect(2, x:getitem({ 2, 1 }), "element at index (2,1)")
-  expect(5, x:getitem({ 1, 3 }), "element at index (1,3)")
+  expect(x.shape[1], x:transpose().shape[2], "shape of transposed matrix")
+  expect(x.shape[2], x:transpose().shape[1], "shape of transposed matrix")
+  expect(x:getitem({ 1, 2 }), x:transpose():getitem({ 2, 1 }), "element of transposed matrix")
+  expect(x:getitem({ 3, 1 }), x:transpose():getitem({ 1, 3 }), "element of transposed matrix")
 end
 
 test_matrix_transpose()
@@ -124,13 +117,13 @@ local function test_matrix_multiplication()
 
   expect(a, x * y, "matmul x@y")
 
-  x:transpose()
+  x = x:transpose()
 
   expect(b, y * x, "matmul y@x^T")
 
   local t = matrix.Matrix:new({ { autograd.Value:new(1), autograd.Value:new(2) } })
   local u = matrix.Matrix:new({ { autograd.Value:new(3), autograd.Value:new(4) } })
-  u:transpose()
+  u = u:transpose()
 
   -- v == w := 1*3 + 4*2
   local v = matrix.Matrix:new({ { autograd.Value:new(11) } })
