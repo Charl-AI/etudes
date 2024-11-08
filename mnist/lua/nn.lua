@@ -51,13 +51,13 @@ end
 function Linear:sgd_update(lr)
   for i = 1, self.in_dim do
     for j = 1, self.out_dim do
-      local w = self.weights.getitem({ i, j })
+      local w = self.weights:getitem({ i, j })
       w.data = w.data - lr * w.grad
     end
   end
 
   for i = 1, self.out_dim do
-    local b = self.biases.getitem({ 1, i })
+    local b = self.biases:getitem({ 1, i })
     b.data = b.data - lr * b.grad
   end
 end
