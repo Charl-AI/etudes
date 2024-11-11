@@ -38,7 +38,7 @@ local function test_relu()
 
   -- grad of output wrt itself is always 1
   expect(1, y1.grad, "grad(relu(5)) wrt output")
-  expect(1, y2.grad, "grad(relu(5)) wrt output")
+  expect(1, y2.grad, "grad(relu(-2)) wrt output")
 end
 
 test_relu()
