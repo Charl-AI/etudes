@@ -33,10 +33,12 @@ function Linear:new(in_dim, out_dim)
   return out
 end
 
-function Linear:repr()
-  local result = string.format("(Linear) in_dim: %i, out_dim: %i\n\n", self.in_dim, self.out_dim)
-  result = result .. string.format("Weights: %s\n", self.weights:repr())
-  result = result .. string.format("Biases: %s", self.biases:repr())
+function Linear:__tostring()
+  local result = string.format("<Linear> in_dim: %i, out_dim: %i\n\n", self.in_dim, self.out_dim)
+  result = result .. "Weights: " .. tostring(self.weights) .. "\n"
+  result = result .. "Biases: " .. tostring(self.biases)
+  -- result = result .. string.format("Weights: %s\n", self.weights:repr())
+  -- result = result .. string.format("Biases: %s", self.biases:repr())
   return result
 end
 
@@ -94,18 +96,18 @@ function Mlp:new(in_dim, out_dim, depth, width)
   return out
 end
 
-function Mlp:repr()
+function Mlp:__tostring()
   local result = string.format(
-    "(MLP) in_dim: %i, out_dim: %i, depth: %i, width: %i, layers:\n",
+    "<MLP> in_dim: %i, out_dim: %i, depth: %i, width: %i, layers:\n",
     self.in_dim,
     self.out_dim,
     self.depth,
     self.width
   )
   for i, layer in ipairs(self.layers) do
-    result = result .. string.format("(Linear) in_dim: %i, out_dim: %i", layer.in_dim, layer.out_dim)
+    result = result .. string.format("<Linear> in_dim: %i, out_dim: %i", layer.in_dim, layer.out_dim)
     if i < #self.layers then
-      result = result .. ", (Relu)\n"
+      result = result .. ", <Relu>\n"
     end
   end
   return result

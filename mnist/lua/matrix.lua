@@ -83,20 +83,15 @@ function Matrix:transpose()
   return out
 end
 
-function Matrix:repr()
-  local result = "(Matrix) Shape: (" .. table.concat(self.shape, ", ")
+function Matrix:__tostring()
+  local result = "<Matrix> Shape: (" .. table.concat(self.shape, ", ")
   result = result .. "), Data:\n"
 
   for i = 1, self.shape[1] do
     result = result .. "{ "
     for j = 1, self.shape[2] do
       local item = self:getitem({ i, j })
-      local str = "N/A"
-      if type(item) == "number" then
-        str = item
-      else
-        str = item:repr()
-      end
+      local str = tostring(item)
       result = result .. str .. ", "
     end
     result = result .. "}\n"

@@ -36,8 +36,8 @@ function Value:__eq(other)
   return self.data == other.data
 end
 
-function Value:repr()
-  return string.format("(Value) Data: %f, Grad: %f", self.data, self.grad)
+function Value:__tostring()
+  return string.format("<Value> Data: %f, Grad: %f", self.data, self.grad)
 end
 
 function Value:backward()
