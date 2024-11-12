@@ -105,7 +105,7 @@ function Mlp:__tostring()
     self.width
   )
   for i, layer in ipairs(self.layers) do
-    result = result .. string.format("<Linear> in_dim: %i, out_dim: %i", layer.in_dim, layer.out_dim)
+    result = result .. string.format("  <Linear> in_dim: %i, out_dim: %i", layer.in_dim, layer.out_dim)
     if i < #self.layers then
       result = result .. ", <Relu>\n"
     end
