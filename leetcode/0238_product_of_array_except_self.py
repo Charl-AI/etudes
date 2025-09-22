@@ -22,7 +22,7 @@ def product_except_self(nums: list[int]) -> list[int]:
 
     for num in nums:
         if not zeros:
-            result.append(prod / num)
+            result.append(int(prod / num))
         elif num == 0:
             result.append(prod)
         else:
