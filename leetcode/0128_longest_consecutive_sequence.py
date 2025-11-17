@@ -10,7 +10,7 @@ You must write an algorithm that runs in O(n) time.
 
 def longest_consecutive(nums: list[int]) -> int:
     unique = set(nums)
-    best = 1
+    best = 0
     for num in nums:
         if num - 1 not in unique:
             i = 1
