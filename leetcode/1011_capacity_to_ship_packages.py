@@ -40,7 +40,7 @@ class LazyMap:
 def ship_within_days(weights: list[int], days: int) -> int:
     # smallest possible capacity is the largest weight in weights
     # biggest useful capacity is sum(weights) so it always does it in one day.
-    capacities = list(range(max(weights), sum(weights) + 1))
+    capacities = range(max(weights), sum(weights) + 1)
 
     # for capacity[i], can_ship[i] is a bool for whether it can ship in the given days
     can_ship = LazyMap(capacities, lambda cap: _can_ship(weights, days, cap))
