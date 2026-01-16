@@ -28,7 +28,6 @@ def counting_sort(nums: list[int]) -> list[int]:
 
 def num_boats(people: list[int], limit: int) -> int:
     people = counting_sort(people)
-    print(people)
     left, right = 0, len(people) - 1
     boats = 0
 
