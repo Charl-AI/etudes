@@ -1,10 +1,11 @@
 # études
 
-Practicing programming in public.
+Practicing maths and programming in public.
 
 This monorepo contains the following projects:
 
 - `aoc/` - advent of code challenges.
+- `mackay/` - excercise solutions for Information Theory, Inference, and Learning Algorithms.
 - `leetcode/` - interview programming puzzles.
 - `mnist/` - MNIST digit classifiers implemented in various languages.
 - `sicp/` - exercise solutions for Structure and Interpretation of Computer Programs.

@@ -1,8 +1,8 @@
 # Mackay's Information Theory, Inference, and Learning Algorithms
 
-Selected solutions to problems I found interesting from the book.
+Solutions to selected problems I found interesting from the book.
 
-Solutions are written up in the `README.md` file for the relevant chapter. I also run simulations and generate plots for some in the accompanying python files. The markdown may be built to PDF in the Tufte style using pandoc:
+Solutions are written up in the `README.md` file for the relevant chapter and displayed as PDFs in `solutions.pdf`. I also run simulations and generate plots for some in the accompanying python files. The markdown may be built to PDF in the Tufte style using pandoc:
 
 ```bash
 pandoc --standalone -V documentclass=tufte-handout \
